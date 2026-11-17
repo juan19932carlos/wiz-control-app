@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+*.egg-info/
+dist/
+
+# Node
+node_modules/
+.pnpm-store
+
+# Docusaurus cache and generated files
+.docusaurus
+architecture/site/build
+
+# Env and editors
+.env
+.env.*
+!.env.example
+.vscode
+*.swp

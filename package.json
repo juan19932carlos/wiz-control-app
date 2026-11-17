@@ -1,0 +1,9 @@
+{
+  "name": "wiz-control-app",
+  "private": true,
+  "packageManager": "pnpm@10.27.0",
+  "scripts": {
+    "dev:docs": "pnpm --filter docs start",
+    "build:docs": "pnpm --filter docs build"
+  }
+}

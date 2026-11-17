@@ -1,0 +1,18 @@
+[project]
+name = "wiz-control-app"
+version = "0.1.0"
+requires-python = ">=3.14"
+
+# Virtual root: it only holds the workspace and the shared dev tools.
+[tool.uv]
+package = false
+
+[tool.uv.workspace]
+members = ["apps/*-py", "packages/*-py"]
+
+[dependency-groups]
+dev = ["pytest>=8", "pytest-asyncio>=1"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["apps", "packages"]
