@@ -1,13 +1,9 @@
 import socket
-import sys
 from collections.abc import AsyncIterator, Awaitable, Callable
-from pathlib import Path
 
 import pytest
 
-sys.path.insert(0, str(Path(__file__).parent))
-
-from fake_bulb import FakeBulb, serve  # noqa: E402
+from wiz_protocol.testing import FakeBulb, serve
 
 
 @pytest.fixture

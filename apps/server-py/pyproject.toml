@@ -1,0 +1,20 @@
+[project]
+name = "wiz-server"
+version = "0.1.0"
+description = "HTTP API that finds WiZ bulbs on the LAN and controls them."
+requires-python = ">=3.14"
+dependencies = [
+    "wiz-protocol",
+    "fastapi>=0.120",
+    "uvicorn>=0.38",
+]
+
+[project.scripts]
+wiz-server = "wiz_server.entrypoints.main:run"
+
+[tool.uv.sources]
+wiz-protocol = { workspace = true }
+
+[build-system]
+requires = ["uv_build>=0.9,<0.14"]
+build-backend = "uv_build"
