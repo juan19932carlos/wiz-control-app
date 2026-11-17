@@ -1,4 +1,5 @@
 from collections.abc import Iterator
+from dataclasses import replace
 
 import pytest
 from fastapi.testclient import TestClient
@@ -83,3 +84,14 @@ def test_unreachable_bulb_is_503(client: TestClient, gateway: FakeGateway) -> No
     gateway.unreachable.add("aa01")
 
     assert client.post("/api/bulbs/aa01/on").status_code == 503
+
+
+def test_a_color_bulb_reports_rgb_as_an_object(gateway: FakeGateway) -> None:
+    color = make_bulb("cc01")
+    color.capabilities = replace(color.capabilities, rgb=True)
+    gateway.network[color.id] = color
+
+    with TestClient(create_app(gateway, InMemoryRepository())) as client:
+        response = client.put("/api/bulbs/cc01/color", json={"r": 1, "g": 2, "b": 3})
+
+    assert response.json()["state"]["rgb"] == {"r": 1, "g": 2, "b": 3}

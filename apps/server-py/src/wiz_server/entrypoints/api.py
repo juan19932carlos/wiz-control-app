@@ -20,11 +20,17 @@ class CapabilitiesOut(BaseModel):
     rgb: bool
 
 
+class RgbOut(BaseModel):
+    r: int
+    g: int
+    b: int
+
+
 class StateOut(BaseModel):
     on: bool
     brightness: int
     kelvin: int | None
-    rgb: tuple[int, int, int] | None
+    rgb: RgbOut | None
 
 
 class BulbOut(BaseModel):
@@ -49,7 +55,12 @@ class BulbOut(BaseModel):
                 max_kelvin=caps.max_kelvin,
                 rgb=caps.rgb,
             ),
-            state=StateOut(on=state.on, brightness=state.brightness, kelvin=state.kelvin, rgb=state.rgb),
+            state=StateOut(
+                on=state.on,
+                brightness=state.brightness,
+                kelvin=state.kelvin,
+                rgb=RgbOut(r=state.rgb[0], g=state.rgb[1], b=state.rgb[2]) if state.rgb else None,
+            ),
         )
 
 
