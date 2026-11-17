@@ -1,0 +1,34 @@
+{
+  "name": "web",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json",
+    "gen:api": "uv run wiz-server-openapi > src/lib/api/openapi.json && openapi-typescript src/lib/api/openapi.json -o src/lib/api/schema.d.ts"
+  },
+  "devDependencies": {
+    "@fontsource-variable/inter": "catalog:",
+    "@internationalized/date": "catalog:",
+    "@lucide/svelte": "catalog:",
+    "@sveltejs/vite-plugin-svelte": "catalog:",
+    "@tailwindcss/vite": "catalog:",
+    "@tsconfig/svelte": "catalog:",
+    "@types/node": "catalog:",
+    "bits-ui": "catalog:",
+    "cn": "catalog:",
+    "openapi-fetch": "catalog:",
+    "openapi-typescript": "catalog:",
+    "shadcn-svelte": "catalog:",
+    "svelte": "catalog:",
+    "svelte-check": "catalog:",
+    "tailwind-variants": "catalog:",
+    "tailwindcss": "catalog:",
+    "tw-animate-css": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:"
+  }
+}

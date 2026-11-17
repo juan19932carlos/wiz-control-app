@@ -3,6 +3,10 @@
   "private": true,
   "packageManager": "pnpm@10.27.0",
   "scripts": {
+    "dev:web": "pnpm --filter web dev",
+    "build:web": "pnpm --filter web build",
+    "check:web": "pnpm --filter web check",
+    "gen:api": "pnpm --filter web gen:api",
     "dev:docs": "pnpm --filter docs start",
     "build:docs": "pnpm --filter docs build"
   }
