@@ -1,8 +1,10 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import { RefreshCw } from '@lucide/svelte'
+  import { ModeWatcher } from 'mode-watcher'
   import { bulbs as api, type Bulb } from '$lib/api/client'
   import BulbCard from '$lib/components/BulbCard.svelte'
+  import ThemeToggle from '$lib/components/ThemeToggle.svelte'
   import { Button } from '$lib/components/ui/button'
 
   const POLL_MS = 3000
@@ -52,6 +54,9 @@
   })
 </script>
 
+<!-- Starts from the system theme; the toggle choice is remembered in localStorage. -->
+<ModeWatcher />
+
 <main class="mx-auto max-w-5xl space-y-6 p-4 sm:p-8">
   <header class="flex items-center justify-between gap-4">
     <div>
@@ -60,10 +65,13 @@
         {bulbs.length} encontrados en la red local
       </p>
     </div>
-    <Button variant="outline" onclick={discover} disabled={discovering}>
-      <RefreshCw class={discovering ? 'animate-spin' : ''} />
-      {discovering ? 'Buscando…' : 'Buscar bombillos'}
-    </Button>
+    <div class="flex items-center gap-2">
+      <Button variant="outline" onclick={discover} disabled={discovering}>
+        <RefreshCw class={discovering ? 'animate-spin' : ''} />
+        {discovering ? 'Buscando…' : 'Buscar bombillos'}
+      </Button>
+      <ThemeToggle />
+    </div>
   </header>
 
   {#if error}

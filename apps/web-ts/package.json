@@ -20,6 +20,7 @@
     "@types/node": "catalog:",
     "bits-ui": "catalog:",
     "cn": "catalog:",
+    "mode-watcher": "catalog:",
     "openapi-fetch": "catalog:",
     "openapi-typescript": "catalog:",
     "shadcn-svelte": "catalog:",
