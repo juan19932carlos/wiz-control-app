@@ -1,0 +1,18 @@
+# Build context is the repo root (monorepo). Send only what the Dockerfiles copy.
+**/node_modules
+**/.venv
+**/__pycache__
+**/.pytest_cache
+**/.ruff_cache
+**/dist
+**/build
+**/.docusaurus
+.git
+.github
+.claude
+architecture/journal
+architecture/decisions
+*.md
+!apps/**/README.md
+.env
+.env.*

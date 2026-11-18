@@ -1,0 +1,27 @@
+# Local and test stack: builds both images from the Dockerfiles in this repo.
+#   WIZ_TARGETS=192.168.2.0/24 docker compose up --build
+# Open http://localhost:8080 (or http://<this-host>:8080 from the LAN).
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: apps/server-py/Dockerfile
+    environment:
+      # Subnet(s) to sweep for bulbs. Broadcast replies are dropped on many hosts, so a subnet is the reliable choice.
+      WIZ_TARGETS: ${WIZ_TARGETS:?set WIZ_TARGETS to the LAN subnet, for example 192.168.2.0/24}
+    # Not published: only the web container reaches the API, through the compose network.
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web-ts/Dockerfile
+    environment:
+      API_UPSTREAM: http://api:8000
+    ports:
+      - "${WEB_PORT:-8080}:80"
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped

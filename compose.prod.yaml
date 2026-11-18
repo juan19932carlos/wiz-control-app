@@ -1,0 +1,22 @@
+# Production stack: runs the images published by the CI pipeline to GitHub Container Registry.
+#   WIZ_TARGETS=192.168.2.0/24 docker compose -f compose.prod.yaml up -d
+# Pin a release with WIZ_VERSION (an image tag: latest, sha-<short>, or a v1.2.3 tag).
+# Private packages need `docker login ghcr.io` first.
+
+services:
+  api:
+    image: ghcr.io/juan19932carlos/wiz-control-server:${WIZ_VERSION:-latest}
+    environment:
+      WIZ_TARGETS: ${WIZ_TARGETS:?set WIZ_TARGETS to the LAN subnet, for example 192.168.2.0/24}
+    restart: unless-stopped
+
+  web:
+    image: ghcr.io/juan19932carlos/wiz-control-web:${WIZ_VERSION:-latest}
+    environment:
+      API_UPSTREAM: http://api:8000
+    ports:
+      - "${WEB_PORT:-8080}:80"
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
