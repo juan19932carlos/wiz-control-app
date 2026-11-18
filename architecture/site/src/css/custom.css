@@ -1,0 +1,22 @@
+.wiz-input {
+  display: block;
+  width: 100%;
+  margin-top: 0.4rem;
+  padding: 0.6rem 0.8rem;
+  font-size: 1.1rem;
+  border: 1px solid var(--ifm-color-emphasis-400);
+  border-radius: var(--ifm-global-radius);
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+}
+
+.wiz-input:focus {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 1px;
+}
+
+.wiz-url {
+  display: inline-block;
+  margin-top: 0.3rem;
+  font-size: 1.3rem;
+}

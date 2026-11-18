@@ -23,6 +23,8 @@ flowchart LR
 
 ## Run it
 
+> **New to tech?** Follow the [step-by-step guide for Windows](https://juan19932carlos.github.io/wiz-control-app/guide/install). It walks you through installing Docker and opening the app on your phone, with no commands to figure out.
+
 Needs Docker and a host on the same network as the bulbs.
 
 ```bash

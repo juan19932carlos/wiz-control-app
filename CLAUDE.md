@@ -11,7 +11,8 @@ Finds WiZ bulbs on the local network, shows their state, and changes brightness,
 | `apps/web-ts` | Svelte SPA (pnpm package `web`). Tailwind + shadcn-svelte, typed client from the OpenAPI schema |
 | `architecture/decisions/` | ADRs |
 | `architecture/journal/` | The author's working journal |
-| `architecture/site` | Docusaurus site for decisions and journal. Its homepage is `README.md`. Not an app |
+| `architecture/guide/` | Install guide for non-technical Windows users, with a compose file generator |
+| `architecture/site` | Docusaurus site for guide, decisions and journal. Its homepage is `README.md`. Not an app |
 | `compose.yaml` / `compose.prod.yaml` | Local stack built from the Dockerfiles / production stack from GHCR images |
 | `.github/workflows/ci.yml` | Tests, API type drift check, image build. Pushes images to GHCR from `main` and `v*` tags |
 

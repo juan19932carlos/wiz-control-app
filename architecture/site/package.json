@@ -13,6 +13,7 @@
     "@docusaurus/preset-classic": "catalog:",
     "@docusaurus/theme-mermaid": "catalog:",
     "@mermaid-js/layout-elk": "catalog:",
+    "qrcode": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:"
   },
@@ -20,6 +21,7 @@
     "@docusaurus/module-type-aliases": "catalog:",
     "@docusaurus/tsconfig": "catalog:",
     "@docusaurus/types": "catalog:",
+    "@types/qrcode": "catalog:",
     "@types/react": "catalog:",
     "typescript": "catalog:"
   }

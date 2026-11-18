@@ -1,0 +1,139 @@
+---
+title: Install on Windows
+description: Run the WiZ control app on your Windows computer and use it from your phone. No tech experience needed.
+sidebar_position: 1
+---
+
+import ComposeGenerator from '@site/src/components/ComposeGenerator';
+
+# Install on Windows
+
+This guide puts the WiZ control app on your Windows computer. When you finish, you can turn your WiZ bulbs on and off, change their brightness, and change their light from any phone or computer in your home.
+
+It takes about 20 minutes the first time. You only do it once.
+
+:::info What you need
+
+- A Windows 10 or Windows 11 computer that stays on while you want to use the app.
+- WiZ bulbs already set up with the official WiZ phone app.
+- The computer and the bulbs on the **same home Wi-Fi network**.
+
+:::
+
+## Step 1. Install Docker Desktop
+
+Docker Desktop is a free program that runs the app for you. You do not need to learn how it works.
+
+1. Open the [Docker Desktop for Windows install page](https://docs.docker.com/desktop/setup/install/windows-install/) and click **Docker Desktop for Windows - x86_64** to download the installer.
+2. Open the downloaded file **Docker Desktop Installer.exe**. If Windows asks *"Do you want to allow this app to make changes?"*, click **Yes**.
+3. Leave the option **Use WSL 2 instead of Hyper-V** checked, and click **OK**.
+4. When the installer finishes, click **Close and restart**. Your computer restarts.
+5. After the restart, Docker Desktop opens by itself. Accept the terms. When it asks you to sign in, click **Skip** or **Continue without signing in**. You do not need an account.
+6. Wait until the bottom-left corner of Docker Desktop says **Engine running**, with a green light.
+
+:::tip Make it start by itself
+
+In Docker Desktop, open **Settings** (the gear icon at the top), then **General**, and check **Start Docker Desktop when you sign in to your computer**. Then the app comes back by itself every time you turn on the computer.
+
+:::
+
+## Step 2. Find your computer's address
+
+Your phone needs your computer's address on the home network. It is called the **IPv4 address**.
+
+1. Click the **Start** button, type `powershell`, and press **Enter**. A blue or black window opens.
+2. Type this and press **Enter**:
+
+   ```powershell
+   ipconfig
+   ```
+
+3. Look for the block called **Wireless LAN adapter Wi-Fi**. If your computer uses a cable, look for **Ethernet adapter Ethernet** instead.
+4. In that block, find the line **IPv4 Address**. It looks like `192.168.1.23`. That is your address.
+
+:::warning Pick the right line
+
+You may see more than one IPv4 address. Ignore the blocks whose name contains **vEthernet**, **WSL**, or **Docker**: Docker created those, and they start with `172.`. Use the one under **Wi-Fi** or **Ethernet**.
+
+:::
+
+## Step 3. Get your settings file
+
+Type your address below. The **port** is the door the app uses on your computer. Leave **8080** unless someone told you to change it.
+
+<ComposeGenerator />
+
+1. Click **Download compose.yaml**. Your browser saves it in your **Downloads** folder.
+2. Open **File Explorer** and create a new folder for the app, for example `Documents\WiZ Control`.
+3. Move **compose.yaml** from **Downloads** into that folder.
+
+:::warning Keep the exact name
+
+The file must be called exactly `compose.yaml`. If your browser saved it as `compose (1).yaml`, rename it to `compose.yaml`.
+
+:::
+
+## Step 4. Start the app
+
+1. Open your **WiZ Control** folder in File Explorer.
+2. Click the address bar at the top of the window (where it says the folder name), type `powershell`, and press **Enter**. A PowerShell window opens, already inside your folder.
+3. Type this and press **Enter**:
+
+   ```powershell
+   docker compose up -d
+   ```
+
+4. The first time, it downloads the app. This takes a few minutes. It is done when you see two lines that end in **Started** or **Running**.
+
+:::info If Windows asks about the firewall
+
+A window may say *"Windows Defender Firewall has blocked some features of this app"* for **Docker Desktop Backend**. Check **Private networks** and click **Allow access**. Without this, your phone cannot open the app.
+
+:::
+
+## Step 5. Open the app
+
+- **On this computer:** open your browser and go to the address from Step 3. `http://localhost:8080` also works here (use your port if you changed it).
+- **On your phone:** connect your phone to the **same Wi-Fi** as the computer. Then scan the QR code from Step 3 with the camera, or type the address in the browser.
+
+You should see your bulbs. If the list is empty, click **Buscar bombillos** and wait a few seconds.
+
+:::tip Make it feel like an app
+
+On your phone, open the address and add it to your home screen. On an iPhone, tap **Share** and then **Add to Home Screen**. On Android, open the **⋮** menu in Chrome and tap **Add to Home screen**.
+
+:::
+
+## Everyday use
+
+The app runs in the background while Docker Desktop is open. You do not need to start it again after a restart if you followed the tip in Step 1.
+
+To run a command, open PowerShell in your **WiZ Control** folder, as in Step 4.
+
+| To do this | Type this |
+| --- | --- |
+| Update to the newest version | `docker compose pull` and then `docker compose up -d` |
+| Stop the app | `docker compose down` |
+| Start it again | `docker compose up -d` |
+
+## If something does not work
+
+**My phone cannot open the page.**
+
+- Check that the phone is on the same Wi-Fi as the computer, not on mobile data and not on a guest network.
+- Windows must treat your home Wi-Fi as private. Go to **Settings → Network & internet → Wi-Fi**, click your network, and choose **Private network**.
+- Open **Windows Security → Firewall & network protection → Allow an app through firewall**. Find **Docker Desktop Backend** and check that **Private** is ticked.
+
+**The app opens, but there are no bulbs.**
+
+- Check that the bulbs are switched on at the wall and work in the WiZ phone app.
+- Check that the bulbs and the computer are on the same Wi-Fi.
+- Click **Buscar bombillos** and wait a few seconds.
+
+**It worked before, and now the phone cannot find it.**
+
+Your router may have given the computer a new address. Run `ipconfig` again (Step 2) and use the new address on your phone. If only the last number changed, you do not need a new settings file.
+
+**Docker says it cannot connect, or that the engine is not running.**
+
+Open Docker Desktop from the Start menu and wait for **Engine running**. Then run `docker compose up -d` again.
