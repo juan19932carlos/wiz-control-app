@@ -11,14 +11,16 @@ Finds WiZ bulbs on the local network, shows their state, and changes brightness,
 | `apps/web-ts` | Svelte SPA (pnpm package `web`). Tailwind + shadcn-svelte, typed client from the OpenAPI schema |
 | `architecture/decisions/` | ADRs |
 | `architecture/journal/` | The author's working journal |
-| `architecture/site` | Docusaurus site for decisions and journal. Not an app |
+| `architecture/site` | Docusaurus site for decisions and journal. Its homepage is `README.md`. Not an app |
+| `compose.yaml` / `compose.prod.yaml` | Local stack built from the Dockerfiles / production stack from GHCR images |
+| `.github/workflows/ci.yml` | Tests, API type drift check, image build. Pushes images to GHCR from `main` and `v*` tags |
 
 - Every folder in `apps/` and `packages/` ends in `-py` (uv member) or `-ts` (pnpm package). No suffix means neither workspace.
 - `.github/workflows/docs.yml` deploys the site to GitHub Pages on push to `main`. `baseUrl` is `/wiz-control-app/`.
 
 ## Tooling
 
-- mise pins python, uv, node, and pnpm in `mise.toml`. Nothing is installed globally, uv included.
+- mise pins python, uv, node, pnpm, and gh in `mise.toml`. Nothing is installed globally, uv included.
 - The root `pyproject.toml` is a virtual uv root. Every Python member is in its `dev` group, so plain `uv sync` installs all of them.
 - A new Python member must be added to both `[tool.uv.sources]` and the `dev` group in the root `pyproject.toml`.
 - pytest runs with `--import-mode=importlib`. Shared server test doubles live in `apps/server-py/tests/server_fakes.py`.
@@ -39,6 +41,14 @@ Repo-wide rules are in `.claude/rules/`: layout and layers, commits, journal, ar
 - So discovery sweeps the subnet host by host. Set `WIZ_TARGETS` to the LAN subnet, for example `192.168.2.0/24`.
 - `WIZ_TARGETS` takes a comma list of IPs, broadcast addresses, or CIDR subnets. Default is `255.255.255.255`, which finds nothing here.
 
+## Docker
+
+- Build context is always the repo root. Dockerfiles live next to their app: `apps/server-py/Dockerfile`, `apps/web-ts/Dockerfile`.
+- The web image is nginx: it serves the SPA and proxies `/api` to `API_UPSTREAM` (default `http://api:8000`). See ADR 0003.
+- The bridge network works for discovery because it is a unicast sweep. Do not switch to `network_mode: host`.
+- Copy `.env.example` to `.env`. Compose refuses to run, even `ps` or `down`, without `WIZ_TARGETS`.
+- Container healthchecks hit `/api/health` and `/healthz`, never `/api/bulbs`, which polls every bulb.
+
 ## Running
 
 | Command | What it does |
@@ -53,3 +63,5 @@ Repo-wide rules are in `.claude/rules/`: layout and layers, commits, journal, ar
 | `pnpm check:web` / `pnpm build:web` | svelte-check / production build |
 | `pnpm gen:api` | Regenerate the OpenAPI schema and TS types |
 | `pnpm dev:docs` | Docs site |
+| `docker compose up --build` | Local stack on `:8080` (`WEB_PORT`) |
+| `docker compose -f compose.prod.yaml up -d` | Production stack from GHCR (`WIZ_VERSION` pins a tag) |
