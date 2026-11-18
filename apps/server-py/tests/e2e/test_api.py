@@ -95,3 +95,11 @@ def test_a_color_bulb_reports_rgb_as_an_object(gateway: FakeGateway) -> None:
         response = client.put("/api/bulbs/cc01/color", json={"r": 1, "g": 2, "b": 3})
 
     assert response.json()["state"]["rgb"] == {"r": 1, "g": 2, "b": 3}
+
+
+def test_health_answers_without_contacting_bulbs(client: TestClient, gateway: FakeGateway) -> None:
+    gateway.unreachable.add("aa01")
+
+    response = client.get("/api/health")
+
+    assert (response.status_code, response.json()) == (200, {"status": "ok"})

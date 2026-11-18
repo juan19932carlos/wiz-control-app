@@ -135,6 +135,11 @@ def create_app(gateway: AbstractBulbGateway, repo: AbstractRepository) -> FastAP
     async def set_color(bulb_id: str, body: ColorIn) -> BulbOut:
         return BulbOut.of(await services.set_color(gateway, repo, bulb_id, (body.r, body.g, body.b)))
 
+    @app.get("/api/health", tags=["health"], operation_id="health")
+    async def health() -> dict[str, str]:
+        """Liveness for container healthchecks. Never talks to the bulbs."""
+        return {"status": "ok"}
+
     app.include_router(router)
     _map_errors(app)
     return app
