@@ -1,5 +1,8 @@
 {
   "extends": "@docusaurus/tsconfig",
-  "compilerOptions": { "baseUrl": "." },
-  "include": ["docusaurus.config.ts", "sidebars.ts"]
+  "compilerOptions": {
+    // @docusaurus/tsconfig still sets baseUrl, deprecated in TypeScript 6. Drop this when Docusaurus removes it.
+    "ignoreDeprecations": "6.0"
+  },
+  "include": ["docusaurus.config.ts", "src"]
 }

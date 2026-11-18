@@ -6,7 +6,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 const COMPOSE_FILE = path.resolve(__dirname, '../../compose.prod.yaml');
 
 /** Gives the install guide the real compose.prod.yaml, so the file people download never drifts from the repo. */
-function composeFilePlugin(): Plugin<string> {
+function composeFilePlugin(): Plugin<unknown> {
   return {
     name: 'compose-file',
     loadContent: async () => {
@@ -18,7 +18,7 @@ function composeFilePlugin(): Plugin<string> {
       }
       return compose;
     },
-    contentLoaded: async ({ content, actions }) => actions.setGlobalData({ compose: content }),
+    contentLoaded: async ({ content, actions }) => actions.setGlobalData({ compose: content as string }),
     getPathsToWatch: () => [COMPOSE_FILE],
   };
 }
